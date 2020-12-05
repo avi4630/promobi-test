@@ -19,12 +19,12 @@ const CardImage = styled(Card.Img)`
 `;
 
 const ProductDetails = () => {
-  const { productDetails, cart, setCart, setProducts, setTotal, products, total } = useContext(ProductContext);
   const [quantity, setQuantity] = useState(1);
   const [show, setShow] = useState(false);
+  const { productDetails, cart, setCart, setProducts, setTotal, products, total } = useContext(ProductContext);
   const handleShow = () => setShow(true);
   const { imgUrl, title, price, quantity: availableQuantity, info, inCart } = productDetails;
-  console.log(productDetails)
+  
   //event handler for add to cart
   const addToCart = (product, quantity) => {
     let tempCart = [...cart];
@@ -62,7 +62,7 @@ const ProductDetails = () => {
               <Card.Text>{info}</Card.Text>
             </div>
           </div>
-          <div className="d-flex justify-content-around border mx-5 py-1 bg-info rounded">
+          <div className="d-flex justify-content-around border py-1 bg-info rounded">
             <h5> Available Quantity : {availableQuantity}</h5>
             <QuantityOptions quantity={quantity} availableQuantity={availableQuantity} setQuantity={setQuantity} />
           </div>
@@ -80,7 +80,7 @@ const ProductDetails = () => {
                   delay={{ show: 250, hide: 400 }}
                   overlay={<Tooltip>Item Is Already In Cart</Tooltip>}
                 >
-                  <label class=" bg-warning p-2 rounded text-dark">
+                  <label className=" bg-warning p-2 rounded text-dark">
                     In Cart
               </label>
                 </OverlayTrigger> :

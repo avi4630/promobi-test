@@ -9,19 +9,21 @@ const QuantityOptions = ({ quantity, setQuantity, availableQuantity }) => {
     }
   } else {
     options = [1, 2, 3];
-  }
+  };
 
   return (
+    <>Select Quantity: 
     <DropdownButton
       size="sm"
       variant="dark"
       title={quantity}
     >{
         options.map((option) => (
-          <Dropdown.Item onClick={() => setQuantity(option)}>{option}</Dropdown.Item>
+          <Dropdown.Item key={option} onClick={() => setQuantity(option)}>{option}</Dropdown.Item>
         ))
       }
     </DropdownButton>
+    </>
   );
 };
 

@@ -104,40 +104,43 @@ const Cart = () => {
   return (
     <div>
       <Modal show={show} setShow={setShow} />
-      <table className="w-100 mt-2 d-none d-sm-block">
-        <tr className="d-flex justify-content-around border rounded mx-4 py-2 bg-dark text-white">
-          <th>PRODUCT</th>
-          <th>PRODUCT NAME</th>
-          <th>PRICE</th>
-          <th>QUANTITY</th>
-          <th>REMOVE</th>
-          <th>TOTAL</th>
-        </tr>
+      <div className="w-100 mt-2 d-none d-sm-block">
+        <div className="d-flex justify-content-around border rounded mx-4 py-2 bg-dark text-white">
+          <h4>PRODUCT</h4>
+          <h4>PRODUCT NAME</h4>
+          <h4>PRICE</h4>
+          <h4>QUANTITY</h4>
+          <h4>REMOVE</h4>
+          <h4>TOTAL</h4>
+        </div>
         {cart.length ?
           cart.map(({ product, quantity, total }) => (
-            <tr className="d-flex justify-content-around py-2 border rounded mx-4 my-2 align-items-center bg-info font-weight-bold">
-              <td><Image src={product.imgUrl} /></td>
-              <td><span>{product.title}</span></td>
-              <td><span>₹{product.price}</span></td>
-              <td>
+            <div 
+            key={product.id}
+            className="d-flex justify-content-around py-2 border rounded mx-4 my-2 align-items-center bg-info font-weight-bold"
+            >
+              <Image src={product.imgUrl} />
+              <span>{product.title}</span>
+              <span>₹{product.price}</span>
+              <div>
                 <Button variant="dark" size="sm" className="mr-1" onClick={() => decreaseProductQuantity(product.id)}>-</Button>
                 <Button variant="light">{quantity}</Button>
                 <Button variant="dark" size="sm" className="ml-1" onClick={() => increaseProductQuantity(product.id)}>+</Button>
-              </td>
-              <td><Button variant="danger" size="sm" onClick={() => removeProductFromCart(product.id)}>Delete</Button></td>
-              <td><span>₹{total}</span></td>
-            </tr>
+              </div>
+              <Button variant="danger" size="sm" onClick={() => removeProductFromCart(product.id)}>Delete</Button>
+              <span>₹{total}</span>
+            </div>
           ))
           :
           <Alert variant="danger" className="text-center mt-2">
             Your Cart Is Currently Empty
         </Alert>
         }
-      </table>
+      </div>
       <div className="d-block d-sm-none d-flex flex-wrap justify-content-center ">
         {cart.length ?
           cart.map(({ product, quantity, total }) => (
-            <div className="d-flex flex-column bg-info m-2 px-3 border rounded">
+            <div key={product.id} className="d-flex flex-column bg-info m-2 px-3 border rounded">
               <Image src={product.imgUrl} />
               <span>{product.title}</span>
               <div>

@@ -67,7 +67,7 @@ const Product = ({ product }) => {
                   delay={{ show: 250, hide: 400 }}
                   overlay={<Tooltip>Item Is Already In Cart</Tooltip>}
                 >
-                  <label class=" bg-primary p-2 rounded text-white">
+                  <label className=" bg-primary p-2 rounded text-white">
                     In Cart
               </label>
                 </OverlayTrigger> :

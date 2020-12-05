@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ProductContext } from "../Context";
 import styled from "styled-components";
 import { Button, Alert } from "react-bootstrap";
+import Modal from "./PlaceOrderModal";
 
 const Image = styled.img`
   border-radius: 20px;
@@ -12,6 +13,8 @@ const Image = styled.img`
 
 const Cart = () => {
   const { cart, setCart, products, setProducts, total, setTotal } = useContext(ProductContext);
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
 
   //function for get total count
   const getTotal = (cart) => {
@@ -80,8 +83,27 @@ const Cart = () => {
     setTotal(0);
   };
 
+  //event handler for place order
+  const placeOrder = () => {
+    let productIds = cart.map(cartItem => cartItem.product.id);
+    const productIndex = [];
+    products.map((item, index) => {
+      if (productIds.includes(item.id))
+        productIndex.push(index);
+    });
+    const tempProducts = [...products];
+    productIndex.map(index => {
+      tempProducts[index].inCart = false;
+    });
+    setTotal(0);
+    setProducts(tempProducts);
+    setCart([]);
+    handleShow()
+  };
+
   return (
     <div>
+      <Modal show={show} setShow={setShow} />
       <table className="w-100 mt-2 d-none d-sm-block">
         <tr className="d-flex justify-content-around border rounded mx-4 py-2 bg-dark text-white">
           <th>PRODUCT</th>
@@ -116,15 +138,15 @@ const Cart = () => {
         {cart.length ?
           cart.map(({ product, quantity, total }) => (
             <div className="d-flex flex-column bg-info m-2 px-3 border rounded">
-            <Image src={product.imgUrl} />
-            <span>{product.title}</span>
-            <div>
-              <Button variant="dark" size="sm" className="mr-1" onClick={() => decreaseProductQuantity(product.id)}>-</Button>
+              <Image src={product.imgUrl} />
+              <span>{product.title}</span>
+              <div>
+                <Button variant="dark" size="sm" className="mr-1" onClick={() => decreaseProductQuantity(product.id)}>-</Button>
                 <Button variant="light">{quantity}</Button>
                 <Button variant="dark" size="sm" className="ml-1" onClick={() => increaseProductQuantity(product.id)}>+</Button>
-            </div>
-            <Button variant="danger" size="sm" onClick={() => removeProductFromCart(product.id)}>Delete</Button>
-            <span>₹{total}</span>
+              </div>
+              <Button variant="danger" size="sm" onClick={() => removeProductFromCart(product.id)}>Remove</Button>
+              <span>₹{total}</span>
             </div>
           )) :
           <Alert variant="danger" className="text-center mt-2">
@@ -145,6 +167,15 @@ const Cart = () => {
           </div>
           <div className="d-flex justify-content-end">
             <h4 className="mr-5 mb-3 font-italic font-weight-bold border rounded p-1 bg-success">GRAND TOTAL : ₹{total}</h4>
+          </div>
+          <div className="text-center">
+            <Button
+              className="mb-2 border border-danger"
+              variant="warning"
+              onClick={placeOrder}
+            >
+              PLACE ORDER
+            </Button>
           </div>
         </div>
 

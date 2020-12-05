@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Image = styled.img`
@@ -14,7 +14,7 @@ const ModalComponent = ({ show, setShow, imgUrl, title, price, quantity }) => {
   return (
     <Modal show={show} onHide={handleClose} size="sm" className="b-secondary">
       <Modal.Header closeButton>
-        <Modal.Title>Item Addedd To Cart</Modal.Title>
+      <Alert variant="success">Item Addedd To Cart</Alert>
       </Modal.Header>
       <Modal.Body>
         <div className="text-center">

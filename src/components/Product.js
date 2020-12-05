@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Card, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { ProductContext } from "../Context";
 import { Link } from "react-router-dom";
-import Modal from "./Modal";
+import Modal from "./AddCartModal";
 
 const CardWrapper = styled(Card)`
   border-radius: 20px;

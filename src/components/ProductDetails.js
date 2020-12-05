@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Card, Button, Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
 import QuantityOptions from "./QuantityOptions";
-import Modal from "./Modal";
+import Modal from "./AddCartModal";
 
 const CardWrapper = styled(Card)`
   border-radius: 20px;

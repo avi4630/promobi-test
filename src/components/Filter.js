@@ -11,11 +11,13 @@ const Filter = () => {
     setProducts
   } = useContext(ProductContext);
 
+  //event handler for sort product in low to high order
   const sortProductByPriceLowToHigh = () => {
     let data = [...products]
     setProducts(data.sort((a, b) => a.price - b.price));
   };
 
+  //event handler for sort product in high to low order
   const sortProductByPriceHightToLow = () => {
     let data = [...products]
     setProducts(data.sort((a, b) => b.price - a.price));

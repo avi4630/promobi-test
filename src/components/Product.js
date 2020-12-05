@@ -15,7 +15,6 @@ const CardImage = styled(Card.Img)`
   border-radius: 20px;
   height: 300px;
   margin: 0 auto 1em auto;
-
 `;
 
 const Product = ({ product }) => {
@@ -29,6 +28,8 @@ const Product = ({ product }) => {
     total,
     setTotal
   } = useContext(ProductContext);
+
+  //check if product already is in cart
   const inCart = cart.find(cartItem => cartItem.product.id == id);
 
   //event handler for add to cart

@@ -4,17 +4,19 @@ import styled from "styled-components";
 import { Button, Alert } from "react-bootstrap";
 import Modal from "./PlaceOrderModal";
 import { Link } from "react-router-dom";
+import { MinLimitModal, MaxLimitModal } from "./LimitExceedsModal";
 
 const Image = styled.img`
   border-radius: 20px;
   width:70px;
   height:70px;
-  
 `;
 
 const Cart = () => {
   const { cart, setCart, total, setTotal, setProductDetails } = useContext(ProductContext);
   const [show, setShow] = useState(false);
+  const [minModalShow, setMinModalShow] = useState(false);
+  const [maxModalShow, setMaxModalShow] = useState(false);
   const handleShow = () => setShow(true);
 
   //function for get total count
@@ -29,6 +31,7 @@ const Cart = () => {
     const tempCart = [...cart];
     tempCart.map(cartItem => {
       if (cartItem.product.id == id) {
+        setMinModalShow(!(cartItem.quantity > 1))
         cartItem.quantity = cartItem.quantity <= 1 ? cartItem.quantity : cartItem.quantity - 1;
         cartItem.total = cartItem.quantity * cartItem.product.price;
         return cartItem;
@@ -44,6 +47,7 @@ const Cart = () => {
     const tempCart = [...cart];
     tempCart.map(cartItem => {
       if (cartItem.product.id == id) {
+        setMaxModalShow(!(cartItem.quantity < 3 && cartItem.quantity < cartItem.product.quantity));
         cartItem.quantity = (cartItem.quantity < 3 && cartItem.quantity < cartItem.product.quantity) ?
           cartItem.quantity + 1 :
           cartItem.quantity;
@@ -79,6 +83,8 @@ const Cart = () => {
   return (
     <div>
       <Modal show={show} setShow={setShow} />
+      <MinLimitModal show={minModalShow} onHide={() => setMinModalShow(false)} />
+      <MaxLimitModal show={maxModalShow} onHide={() => setMaxModalShow(false)} />
       <div className="w-100 mt-2 d-none d-sm-block">
         <div className="d-flex justify-content-around border rounded mx-4 py-2 bg-dark text-white">
           <h4>PRODUCT</h4>

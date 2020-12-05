@@ -21,22 +21,17 @@ const CardImage = styled(Card.Img)`
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [show, setShow] = useState(false);
-  const { productDetails, cart, setCart, setProducts, setTotal, products, total } = useContext(ProductContext);
+  const { productDetails, cart, setCart, setTotal, total } = useContext(ProductContext);
   const handleShow = () => setShow(true);
-  const { imgUrl, title, price, quantity: availableQuantity, info, inCart } = productDetails;
-  
+  const { id, imgUrl, title, price, quantity: availableQuantity, info } = productDetails;
+  const inCart = cart.find(cartItem => cartItem.product.id == id);
+
   //event handler for add to cart
   const addToCart = (product, quantity) => {
     let tempCart = [...cart];
     let cartItem = { product: product, quantity: quantity, total: product.price * quantity }
     tempCart.push(cartItem);
     setCart(tempCart);
-
-    const tempProducts = [...products];
-    const productIndex = tempProducts.findIndex(item => item.id == product.id);
-    tempProducts[productIndex].inCart = true;
-    setProducts(tempProducts);
-
     setTotal(total + cartItem.total);
     handleShow();
   };
@@ -49,7 +44,7 @@ const ProductDetails = () => {
     );
   return (
     <div className="d-flex justify-content-center">
-      <Modal show={show} setShow={setShow} imgUrl={imgUrl} price={price} title={title} quantity={quantity}/>
+      <Modal show={show} setShow={setShow} imgUrl={imgUrl} price={price} title={title} quantity={quantity} />
       <CardWrapper className="m-2 bg-secondary">
         <Card.Body >
           <div className="row">
@@ -68,24 +63,26 @@ const ProductDetails = () => {
           </div>
           <Card.Footer>
             <div className="text-center">
-            <Link to="/">
-              <Button>Back To Product List</Button>
-            </Link>
+              <Link to="/">
+                <Button>Back To Product List</Button>
+              </Link>
             </div>
             <div className="text-center mt-2">
-            {
-              inCart ?
-                <OverlayTrigger
-                  placement="top"
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={<Tooltip>Item Is Already In Cart</Tooltip>}
-                >
-                  <label className=" bg-warning p-2 rounded text-dark">
-                    In Cart
-              </label>
-                </OverlayTrigger> :
-                <Button variant="warning" onClick={() => addToCart(productDetails, quantity)}> Add To Cart</Button>
-            }
+              {
+                inCart ?
+                  <OverlayTrigger
+                    placement="top"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={<Tooltip>Item Is Already In Cart</Tooltip>}
+                  >
+                    <Link to="/cart">
+                      <label className=" bg-warning p-2 rounded text-dark">
+                        Go To Cart
+                      </label>
+                    </Link>
+                  </OverlayTrigger> :
+                  <Button variant="warning" onClick={() => addToCart(productDetails, quantity)}> Add To Cart</Button>
+              }
             </div>
           </Card.Footer>
         </Card.Body>

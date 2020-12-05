@@ -3,6 +3,7 @@ import { ProductContext } from "../Context";
 import styled from "styled-components";
 import { Button, Alert } from "react-bootstrap";
 import Modal from "./PlaceOrderModal";
+import { Link } from "react-router-dom";
 
 const Image = styled.img`
   border-radius: 20px;
@@ -12,7 +13,7 @@ const Image = styled.img`
 `;
 
 const Cart = () => {
-  const { cart, setCart, products, setProducts, total, setTotal } = useContext(ProductContext);
+  const { cart, setCart, total, setTotal, setProductDetails } = useContext(ProductContext);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
 
@@ -60,43 +61,17 @@ const Cart = () => {
     const tempCart = cart.filter(cartItem => cartItem.product.id != id);
     setCart(tempCart);
     setTotal(getTotal(tempCart));
-    const tempProducts = [...products];
-    const productIndex = tempProducts.findIndex(item => item.id == id);
-    tempProducts[productIndex].inCart = false;
-    setProducts(tempProducts);
   };
 
   //event handler for clear cart
   const clearCart = () => {
-    let productIds = cart.map(cartItem => cartItem.product.id);
-    const productIndex = [];
-    products.map((item, index) => {
-      if (productIds.includes(item.id))
-        productIndex.push(index);
-    });
-    const tempProducts = [...products];
-    productIndex.map(index => {
-      tempProducts[index].inCart = false;
-    });
-    setProducts(tempProducts);
     setCart([]);
     setTotal(0);
   };
 
   //event handler for place order
   const placeOrder = () => {
-    let productIds = cart.map(cartItem => cartItem.product.id);
-    const productIndex = [];
-    products.map((item, index) => {
-      if (productIds.includes(item.id))
-        productIndex.push(index);
-    });
-    const tempProducts = [...products];
-    productIndex.map(index => {
-      tempProducts[index].inCart = false;
-    });
     setTotal(0);
-    setProducts(tempProducts);
     setCart([]);
     handleShow()
   };
@@ -115,11 +90,13 @@ const Cart = () => {
         </div>
         {cart.length ?
           cart.map(({ product, quantity, total }) => (
-            <div 
-            key={product.id}
-            className="d-flex justify-content-around py-2 border rounded mx-4 my-2 align-items-center bg-info font-weight-bold"
+            <div
+              key={product.id}
+              className="d-flex justify-content-around py-2 border rounded mx-4 my-2 align-items-center bg-info font-weight-bold"
             >
-              <Image src={product.imgUrl} />
+              <Link to="/details">
+                <Image src={product.imgUrl} onClick={() => { setProductDetails(product) }} />
+              </Link>
               <span>{product.title}</span>
               <span>₹{product.price}</span>
               <div>
@@ -141,7 +118,9 @@ const Cart = () => {
         {cart.length ?
           cart.map(({ product, quantity, total }) => (
             <div key={product.id} className="d-flex flex-column bg-info m-2 px-3 border rounded">
-              <Image src={product.imgUrl} />
+              <Link to="/details">
+                <Image src={product.imgUrl} onClick={() => { setProductDetails(product) }} />
+              </Link>
               <span>{product.title}</span>
               <div>
                 <Button variant="dark" size="sm" className="mr-1" onClick={() => decreaseProductQuantity(product.id)}>-</Button>

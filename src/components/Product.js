@@ -19,19 +19,17 @@ const CardImage = styled(Card.Img)`
 `;
 
 const Product = ({ product }) => {
-  const { title, price, imgUrl, inCart } = product;
+  const { id, title, price, imgUrl } = product;
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-
   const {
     setProductDetails,
     setCart,
     cart,
-    products,
-    setProducts,
     total,
     setTotal
   } = useContext(ProductContext);
+  const inCart = cart.find(cartItem => cartItem.product.id == id);
 
   //event handler for add to cart
   const addToCart = (product, quantity) => {
@@ -39,12 +37,6 @@ const Product = ({ product }) => {
     let cartItem = { product: product, quantity: quantity, total: product.price * quantity }
     tempCart.push(cartItem);
     setCart(tempCart);
-
-    const tempProducts = [...products];
-    const productIndex = tempProducts.findIndex(item => item.id == product.id);
-    tempProducts[productIndex].inCart = true;
-    setProducts(tempProducts);
-
     setTotal(total + cartItem.total);
     handleShow()
   };
@@ -69,7 +61,7 @@ const Product = ({ product }) => {
                 >
                   <label className=" bg-primary p-2 rounded text-white">
                     In Cart
-              </label>
+                  </label>
                 </OverlayTrigger> :
                 <Button onClick={() => addToCart(product, 1)}> Add To Cart</Button>
             }
